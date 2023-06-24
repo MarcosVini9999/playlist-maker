@@ -1,5 +1,18 @@
+interface iArtists {
+  name: string;
+}
+
+interface iImages {
+  url: string;
+}
+
+interface iAlbum {
+  artists: Array<iArtists>;
+  images: Array<iImages>;
+}
+
 export interface iTrack {
-  album: Object;
+  album: iAlbum;
   artists: Array<Object>;
   available_markets: Array<string>;
   disc_number: number;
@@ -16,4 +29,14 @@ export interface iTrack {
   track_number: number;
   type: string;
   uri: string;
+}
+
+interface UserImage {
+  url: string;
+}
+
+export interface iUserData {
+  country: string;
+  display_name: string;
+  images: Array<UserImage>;
 }

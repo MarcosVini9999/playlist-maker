@@ -1,14 +1,15 @@
 "use client";
 import React from "react";
 import { generateCodeChallenge, generateRandomString } from "./utils/functions";
-import { iTrack } from "./utils/interfaces";
+import { iTrack, iUserData } from "./utils/interfaces";
 import { Button } from "@material-tailwind/react";
-import { AudioPlayer } from "./Components/AudioPlayer/AudioPlayer";
+import { UserCard, AudioPlayer, AudioCard } from "./Components";
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = React.useState("");
   const [playlist, setPlaylist] = React.useState<Array<iTrack>>();
   const [newPlaylist, setNewPlaylist] = React.useState<Array<iTrack>>();
+  const [userData, setUserData] = React.useState<iUserData>();
 
   const onSearch = async () => {
     const access_token = window.localStorage.getItem("access_token");
@@ -30,6 +31,8 @@ export default function Home() {
   };
 
   React.useEffect(() => {
+    if (userData) return;
+
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("code");
     const codeVerifier = localStorage.getItem("code_verifier");
@@ -76,6 +79,7 @@ export default function Home() {
       });
 
       const data = await response.json();
+      setUserData(data);
     }
     getProfile();
   }, []);
@@ -173,35 +177,31 @@ export default function Home() {
             }
           </button>
         </div>
-        <div className="fixed top-3 right-3">
-          <Button className="bg-black dark:bg-green-400" size="sm" onClick={onLogIn}>
-            login
-          </Button>
-        </div>
+        <UserCard userData={userData} onLogIn={onLogIn} />
       </header>
       <main className="flex flex-col items-center justify-center">
         <div className="flex flex-col gap-5 my-11 lg:my-28 md:flex-row">
-          <div
-            className="w-72 h-96 lg:w-96 overflow-auto border-solid border-2 bg-gray-300 dark:bg-gray-900 border-black dark:border-green-400
+          <div className="flex flex-col items-center">
+            <p>Searched songs</p>
+            <div
+              className="w-72 h-96 lg:w-96 overflow-auto border-solid border-2 bg-gray-300 dark:bg-gray-900 border-black dark:border-green-400
               scrollbar-thin scrollbar-thumb-black dark:scrollbar-thumb-green-400"
-          >
-            {playlist?.map((track, index) => (
-              <div key={index}>
-                <h1>{track?.name}</h1>
-                <AudioPlayer url={track?.preview_url} onAdd={() => handleAddTrack(track)} />
-              </div>
-            ))}
+            >
+              {playlist?.map((track, index) => (
+                <AudioCard key={index} track={track} onAddTrack={handleAddTrack} />
+              ))}
+            </div>
           </div>
-          <div
-            className="w-72 h-96 lg:w-96 overflow-auto border-solid border-2 bg-gray-300 dark:bg-gray-900 border-black dark:border-green-400
+          <div className="flex flex-col items-center">
+            <p>Playlist to be created</p>
+            <div
+              className="w-72 h-96 lg:w-96 overflow-auto border-solid border-2 bg-gray-300 dark:bg-gray-900 border-black dark:border-green-400
                 scrollbar-thin scrollbar-thumb-black dark:scrollbar-thumb-green-400"
-          >
-            {newPlaylist?.map((track, index) => (
-              <div key={index}>
-                <h1>{track?.name}</h1>
-                <AudioPlayer url={track?.preview_url} onRemove={() => handleRemoveTrack(track)} />
-              </div>
-            ))}
+            >
+              {newPlaylist?.map((track, index) => (
+                <AudioCard key={index} track={track} onRemoveTrack={handleRemoveTrack} />
+              ))}
+            </div>
           </div>
         </div>
         <Button className="bg-black dark:bg-green-400 w-52" onClick={() => alert("update soon")}>
