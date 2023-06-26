@@ -180,11 +180,20 @@ export default function Home() {
         <UserCard userData={userData} onLogIn={onLogIn} />
       </header>
       <main className="flex flex-col items-center justify-center">
-        <div className="flex flex-col gap-5 my-11 lg:my-28 md:flex-row">
+        <h1 className="flex flex-row text-4xl items-center font-serif">
+          Playlist Maker
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Spotify_icon.svg/1982px-Spotify_icon.svg.png"
+            alt="spotify-icon"
+            className="w-8 h-8 mx-2"
+          />
+        </h1>
+
+        <div className="flex flex-col gap-5 my-11 lg:my-16 md:flex-row">
           <div className="flex flex-col items-center">
             <p>Searched songs</p>
             <div
-              className="w-72 h-96 lg:w-96 overflow-auto border-solid border-2 bg-gray-300 dark:bg-gray-900 border-black dark:border-green-400
+              className="w-64 h-96 sm:w-72 md:w-80 lg:w-96 overflow-auto border-solid border-2 bg-gray-300 dark:bg-gray-900 border-black dark:border-green-400
               scrollbar-thin scrollbar-thumb-black dark:scrollbar-thumb-green-400"
             >
               {playlist?.map((track, index) => (
@@ -195,7 +204,7 @@ export default function Home() {
           <div className="flex flex-col items-center">
             <p>Playlist to be created</p>
             <div
-              className="w-72 h-96 lg:w-96 overflow-auto border-solid border-2 bg-gray-300 dark:bg-gray-900 border-black dark:border-green-400
+              className="w-64 h-96 sm:w-72 md:w-80 lg:w-96 overflow-auto border-solid border-2 bg-gray-300 dark:bg-gray-900 border-black dark:border-green-400
                 scrollbar-thin scrollbar-thumb-black dark:scrollbar-thumb-green-400"
             >
               {newPlaylist?.map((track, index) => (
